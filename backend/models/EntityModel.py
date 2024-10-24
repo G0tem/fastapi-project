@@ -1,4 +1,3 @@
-from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 
 Base = declarative_base()

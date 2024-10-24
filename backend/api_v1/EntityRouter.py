@@ -14,12 +14,12 @@ entity_router = APIRouter(
 @entity_router.get("/entity")
 async def get_entity():
     """Get entity."""
-    result = EntityRepositories.get_entity()
+    result = await EntityRepositories.get_entity()
     return result
 
 
 @entity_router.post("/entity")
 async def post_entity(entity: Annotated[EntityAdd, Depends()]):
     """Post entity."""
-    result = EntityRepositories.post_entity()
+    result =  await EntityRepositories.post_entity(entity)
     return result
