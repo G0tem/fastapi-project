@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from typing import Annotated
+from fastapi import APIRouter, Depends
 
 from backend.repositories.EntityRepositories import EntityRepositories
+from backend.schemas.EntitySchemas import Entity, EntityAdd
 
 
 entity_router = APIRouter(
@@ -17,7 +19,7 @@ async def get_entity():
 
 
 @entity_router.post("/entity")
-async def post_entity():
+async def post_entity(entity: Annotated[EntityAdd, Depends()]):
     """Post entity."""
     result = EntityRepositories.post_entity()
     return result
