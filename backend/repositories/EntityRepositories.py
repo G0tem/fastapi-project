@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from backend.models.EntityModel import Entity
 from sqlalchemy import select
 from backend.schemas.EntitySchemas import EntityAdd
@@ -36,7 +37,7 @@ class EntityRepositories:
     async def update_entity(id: int, entity: EntityAdd, session):
         entity_to_update = await session.get(Entity, id)
         if entity_to_update is None:
-            return {"error": "Entity not found"}
+            raise HTTPException(status_code=404, detail=f"нет обьекта с {id}, изменить невозможно")
         entity_to_update.name = entity.name
         entity_to_update.description = entity.description
         await session.commit()
@@ -50,8 +51,8 @@ class EntityRepositories:
     async def delete_entity(id: int, session):
         entity_to_delete = await session.get(Entity, id)
         if entity_to_delete is None:
-            return {"error": "Entity not found"}
+            raise HTTPException(status_code=404, detail=f"нет обьекта с {id}, удалить невозможно")
         await session.delete(entity_to_delete)
         await session.commit()
         return {"message": "Entity deleted"}
-        
+       
