@@ -14,19 +14,19 @@ entity_router = APIRouter(
 
 
 @entity_router.get("/entity")
-async def get_entity(session: AsyncSession = Depends(get_async_session)):
+async def get_entity(session: AsyncSession = Depends(get_async_session)) -> list[Entity]:
     """Get entity."""
     result = await EntityRepositories.get_entity(session)
     return result
 
 @entity_router.post("/entity")
-async def post_entity(entity: Annotated[EntityAdd, Depends()], session: AsyncSession = Depends(get_async_session)):
+async def post_entity(entity: Annotated[EntityAdd, Depends()], session: AsyncSession = Depends(get_async_session)) -> Entity:
     """Post entity."""
     result =  await EntityRepositories.post_entity(entity, session)
     return result
 
 @entity_router.put("/entity/{id:int}")
-async def update_entity(id, entity: Annotated[Entity, Depends()], session: AsyncSession = Depends(get_async_session)):
+async def update_entity(id, entity: Annotated[Entity, Depends()], session: AsyncSession = Depends(get_async_session)) -> Entity:
     """Update entity."""
     result = await EntityRepositories.update_entity(id, entity, session)
     return result
