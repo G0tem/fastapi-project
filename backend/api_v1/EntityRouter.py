@@ -24,3 +24,15 @@ async def post_entity(entity: Annotated[EntityAdd, Depends()], session: AsyncSes
     """Post entity."""
     result =  await EntityRepositories.post_entity(entity, session)
     return result
+
+@entity_router.put("/entity/{id:int}")
+async def update_entity(id, entity: Annotated[Entity, Depends()], session: AsyncSession = Depends(get_async_session)):
+    """Update entity."""
+    result = await EntityRepositories.update_entity(id, entity, session)
+    return result
+
+@entity_router.delete("/entity/{id:int}")
+async def delete_entity(id: int, session: AsyncSession = Depends(get_async_session)):
+    """Delete entity."""
+    result = await EntityRepositories.delete_entity(id, session)
+    return result

@@ -1,5 +1,6 @@
 from backend.models.EntityModel import Entity
 from sqlalchemy import select
+from backend.schemas.EntitySchemas import EntityAdd
 
 
 class EntityRepositories:
@@ -32,27 +33,25 @@ class EntityRepositories:
             "description": new_entity.description,
         }
 
-    # async def put_entity(id: int, entity: EntityAdd):
-    #     async with async_session() as session:
-    #         entity_to_update = await session.get(Entity, id)
-    #         if entity_to_update is None:
-    #             return {"error": "Entity not found"}
-    #         entity_to_update.name = entity.name
-    #         entity_to_update.description = entity.description
-    #         await session.commit()
-    #         await session.refresh(entity_to_update)
-    #         return {
-    #             "id": entity_to_update.id,
-    #             "name": entity_to_update.name,
-    #             "description": entity_to_update.description,
-    #         }
+    async def update_entity(id: int, entity: EntityAdd, session):
+        entity_to_update = await session.get(Entity, id)
+        if entity_to_update is None:
+            return {"error": "Entity not found"}
+        entity_to_update.name = entity.name
+        entity_to_update.description = entity.description
+        await session.commit()
+        await session.refresh(entity_to_update)
+        return {
+            "id": entity_to_update.id,
+            "name": entity_to_update.name,
+            "description": entity_to_update.description,
+        }
 
-    # async def delete_entity(id: int):
-    #     async with async_session() as session:
-    #         entity_to_delete = await session.get(Entity, id)
-    #         if entity_to_delete is None:
-    #             return {"error": "Entity not found"}
-    #         await session.delete(entity_to_delete)
-    #         await session.commit()
-    #         return {"message": "Entity deleted"}
+    async def delete_entity(id: int, session):
+        entity_to_delete = await session.get(Entity, id)
+        if entity_to_delete is None:
+            return {"error": "Entity not found"}
+        await session.delete(entity_to_delete)
+        await session.commit()
+        return {"message": "Entity deleted"}
         
